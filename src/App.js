@@ -13,40 +13,17 @@ import axios from "axios";
 
 function App() {
   const [userInfo, setUserInfo] = useState([])
-  const [desc, setDesc] = useState("")
-  const [value, setValue] = useState({})
+  const [desc, setDesc] = useState("name")
+  const [value, setValue] = useState([])
+  const [data, setData] = useState([])
   const url = "https://randomuser.me/api/";
-  const defaultImage = "https://randomuser.me/api/portraits/men/75.jpg";
+
 
   const getUser = async () => {
     try {
       const { data: { results } } = await axios(url)
-      console.log(results[0])
-      const {
-        picture: { large },
-        name: { title, first, last },
-        email,
-        cell,
-        location: { state, country },
-        registered: { date, age },
-        login: { username }
-      } = results[0];
-      setUserInfo({
-        large,
-        title,
-        first,
-        last,
-        email,
-        cell,
-        state,
-        country,
-        date,
-        age,
-        username,
-      });
-      console.log(userInfo)
-      setDesc("name")
-      setValue(userInfo?.title, userInfo?.first, userInfo?.last)
+      setUserInfo(results[0])
+      setValue(`${results[0].name.title} ${results[0].name.first} ${results[0].name.last}`)
 
 
     } catch (error) {
@@ -54,25 +31,42 @@ function App() {
     }
   }
 
+
   useEffect(() => {
     getUser()
 
 
   }, [])
 
-  const handleNew = (e) => {
+  const handleNew = () => {
     getUser()
-    setDesc()
-    setValue(e.target.value)
+    setDesc("name")
+    setValue(`${userInfo?.name?.title} ${userInfo?.name?.first} ${userInfo?.name?.last}`)
   }
   const handleClick = (e) => {
-    setDesc("name")
-    setValue(userInfo?.title, userInfo?.first, userInfo?.last)
+    setDesc(e.target.id)
+    setValue(e.target.value)
   }
-  const handleAdd = (e) => {
-    console.log(e.target);
+  const handleAdd = () => {
+    setData([...data, {
+      name: `${userInfo?.name?.first}`,
+      email: `${userInfo?.email}`,
+      phone: `${userInfo?.cell}`,
+      age: `${userInfo?.dob?.age}`,
+      id: `${userInfo?.id.value}`
+    }])
+
+    data.filter((item) => {
+      return (
+        item.id !== userInfo?.id.value
+      )
+    })
+
+    setData(data);
   }
-  console.log(value)
+
+  console.log(userInfo)
+
 
 
   return (
@@ -82,26 +76,26 @@ function App() {
       </div>
       <div className="block">
         <div className="container">
-          <img src={userInfo?.large} alt="random user" className="user-img" />
-          <p className="user-title">My {desc} is {value[1]}</p>
+          <img src={userInfo?.picture?.large} alt="random user" className="user-img" />
+          <p className="user-title">My {desc} is {value}</p>
           <p className="user-value"></p>
           <div className="values-list">
-            <button className="icon" id="name" onClick={handleClick} value={userInfo?.title + " " + userInfo?.first + " " + userInfo?.last}>
+            <button className="icon" id="name" onClick={handleClick} value={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last}>
               <img src={womanSvg} alt="user" id="iconImg" />
             </button>
             <button className="icon" id="email" onClick={handleClick} value={userInfo?.email}>
-              <img src={mailSvg} alt="mail" id="iconImg" value={userInfo?.email} />
+              <img src={mailSvg} alt="mail" id="iconImg" />
             </button>
-            <button className="icon" id="age" onClick={handleClick} value={userInfo?.age}>
+            <button className="icon" id="age" onClick={handleClick} value={userInfo?.dob?.age}>
               <img src={womanAgeSvg} alt="age" id="iconImg" />
             </button>
-            <button className="icon" id="street" onClick={handleClick} value={userInfo?.state}>
+            <button className="icon" id="street" onClick={handleClick} value={userInfo?.location?.state}>
               <img src={mapSvg} alt="map" id="iconImg" />
             </button>
-            <button className="icon" id="phone" onClick={handleClick} value={userInfo?.cell}>
+            <button className="icon" id="phone" onClick={handleClick} value={userInfo?.cell} >
               <img src={phoneSvg} alt="phone" id="iconImg" />
             </button>
-            <button className="icon" id="password" onClick={handleClick} value={userInfo?.username}>
+            <button className="icon" id="password" onClick={handleClick} value={userInfo?.login?.username} >
               <img src={padlockSvg} alt="lock" id="iconImg" />
             </button>
           </div>
@@ -124,15 +118,30 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr className="body-tr"></tr>
+
+              {data.length
+
+                ? data.map((item, index) => {
+                  console.log(item, index);
+                  const { name, email, phone, age, id } = item
+                  console.log(id);
+                  return (<tr className="body-tr" key={index}>
+                    <td className="th">{name}</td>
+                    <td className="th">{email}</td>
+                    <td className="th">{phone}</td>
+                    <td className="th">{age}</td>
+                  </tr>)
+                })
+                : ""
+              }
             </tbody>
           </table>
         </div>
-      </div>
+      </div >
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Footer />
       </div>
-    </main>
+    </main >
   );
 }
 
