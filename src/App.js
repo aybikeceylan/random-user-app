@@ -48,6 +48,7 @@ function App() {
     setValue(`${userInfo?.name?.title} ${userInfo?.name?.first} ${userInfo?.name?.last}`)
   }
   const handleClick = (e) => {
+    e.stopPropagation()
     setDesc(e.target.id)
     setValue(e.target.value)
   }
@@ -89,23 +90,23 @@ function App() {
           <p className="user-title">My {desc} is {value}</p>
           <p className="user-value"></p>
           <div className="values-list">
-            <button className="icon" id="name" onClick={handleClick} value={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last}>
-              <img src={womanSvg} alt="user" id="iconImg" />
+            <button className="icon" id="name" onClick={handleClick} value={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last} >
+              <img src={womanSvg} alt="user" className="iconImg" />
             </button>
             <button className="icon" id="email" onClick={handleClick} value={userInfo?.email}>
-              <img src={mailSvg} alt="mail" id="iconImg" />
+              <img src={mailSvg} alt="mail" className="iconImg" />
             </button>
             <button className="icon" id="age" onClick={handleClick} value={userInfo?.dob?.age}>
-              <img src={womanAgeSvg} alt="age" id="iconImg" />
+              <img src={womanAgeSvg} alt="age" className="iconImg" />
             </button>
             <button className="icon" id="street" onClick={handleClick} value={userInfo?.location?.state}>
-              <img src={mapSvg} alt="map" id="iconImg" />
+              <img src={mapSvg} alt="map" className="iconImg" />
             </button>
             <button className="icon" id="phone" onClick={handleClick} value={userInfo?.cell} >
-              <img src={phoneSvg} alt="phone" id="iconImg" />
+              <img src={phoneSvg} alt="phone" className="iconImg" />
             </button>
             <button className="icon" id="password" onClick={handleClick} value={userInfo?.login?.username} >
-              <img src={padlockSvg} alt="lock" id="iconImg" />
+              <img src={padlockSvg} alt="lock" className="iconImg" />
             </button>
           </div>
           <div className="btn-group">

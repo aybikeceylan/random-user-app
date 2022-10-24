@@ -175,6 +175,10 @@ p {
   cursor: pointer;
   color: var(--clr-grey-5);
   transition: var(--transition);
+  width: 50px;
+  height: 50px;
+  background-size: 3px 3px;
+  background-repeat: no-repeat;
 }
 .icon:hover {
   color: var(--clr-primary-5);
@@ -186,7 +190,7 @@ p {
   width: 150px;
 }
 
-#iconImg {
+.icon .iconImg {
   width: 50px;
   height: 50px;
 }
