@@ -34,7 +34,11 @@ function App() {
 
   useEffect(() => {
     getUser()
-
+    const items = JSON.parse(localStorage.getItem('items'));
+    console.log(items);
+    if (items) {
+      setData(items);
+    }
 
   }, [])
 
@@ -48,24 +52,29 @@ function App() {
     setValue(e.target.value)
   }
   const handleAdd = () => {
-    setData([...data, {
+    let user = {
       name: `${userInfo?.name?.first}`,
       email: `${userInfo?.email}`,
       phone: `${userInfo?.cell}`,
       age: `${userInfo?.dob?.age}`,
       id: `${userInfo?.id.value}`
-    }])
+    }
 
-    data.filter((item) => {
-      return (
-        item.id !== userInfo?.id.value
-      )
-    })
+    if ((data?.filter((item) => item.id === user.id)).length) {
+      alert("Same User Clicked! ")
+    } else {
+      setData([...data, user])
+    }
 
-    setData(data);
+  }
+  const handleClear = () => {
+    setData([])
   }
 
-  console.log(userInfo)
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(data));
+  }, [data])
+
 
 
 
@@ -106,6 +115,9 @@ function App() {
             <button className="btn" type="button" onClick={handleAdd}>
               add user
             </button>
+            <button className="btn" type="button" onClick={handleClear}>
+              Clear All
+            </button>
           </div>
 
           <table className="table">
@@ -122,9 +134,9 @@ function App() {
               {data.length
 
                 ? data.map((item, index) => {
-                  console.log(item, index);
+                  // console.log(item, index);
                   const { name, email, phone, age, id } = item
-                  console.log(id);
+
                   return (<tr className="body-tr" key={index}>
                     <td className="th">{name}</td>
                     <td className="th">{email}</td>
