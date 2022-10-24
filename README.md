@@ -1,1 +1,1 @@
-![Random User App](random-user-app.gif)
+https://random-user-aybike.netlify.app/
