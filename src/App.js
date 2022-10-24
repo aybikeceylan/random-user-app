@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import mailSvg from "./assets/mail.svg";
+import manSvg from "./assets/man.svg";
 import womanSvg from "./assets/woman.svg";
+import manAgeSvg from "./assets/growing-up-man.svg";
 import womanAgeSvg from "./assets/growing-up-woman.svg";
 import mapSvg from "./assets/map.svg";
 import phoneSvg from "./assets/phone.svg";
 import padlockSvg from "./assets/padlock.svg";
 import cwSvg from "./assets/cw.svg";
 import Footer from "./components/footer/Footer";
-import axios from "axios";
 
 
 
@@ -53,7 +55,7 @@ function App() {
     setValue(e.target.value)
   }
   const handleAdd = () => {
-    let user = {
+    user = {
       name: `${userInfo?.name?.first}`,
       email: `${userInfo?.email}`,
       phone: `${userInfo?.cell}`,
@@ -91,13 +93,13 @@ function App() {
           <p className="user-value"></p>
           <div className="values-list">
             <button className="icon" id="name" onClick={handleClick} value={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last} >
-              <img src={womanSvg} alt="user" className="iconImg" />
+              <img src={userInfo?.gender === "female" ? womanSvg : manSvg} alt="user" className="iconImg" />
             </button>
             <button className="icon" id="email" onClick={handleClick} value={userInfo?.email}>
               <img src={mailSvg} alt="mail" className="iconImg" />
             </button>
             <button className="icon" id="age" onClick={handleClick} value={userInfo?.dob?.age}>
-              <img src={womanAgeSvg} alt="age" className="iconImg" />
+              <img src={userInfo?.gender === "female" ? womanAgeSvg : manAgeSvg} alt="age" className="iconImg" />
             </button>
             <button className="icon" id="street" onClick={handleClick} value={userInfo?.location?.state}>
               <img src={mapSvg} alt="map" className="iconImg" />
