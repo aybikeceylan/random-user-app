@@ -177,8 +177,6 @@ p {
   transition: var(--transition);
   width: 50px;
   height: 50px;
-  background-size: 3px 3px;
-  background-repeat: no-repeat;
 }
 .icon:hover {
   color: var(--clr-primary-5);

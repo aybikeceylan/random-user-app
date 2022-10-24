@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import mailSvg from "./assets/mail.svg";
 import manSvg from "./assets/man.svg";
@@ -20,7 +20,6 @@ function App() {
   const [data, setData] = useState([])
   const url = "https://randomuser.me/api/";
 
-
   const getUser = async () => {
     try {
       const { data: { results } } = await axios(url)
@@ -32,8 +31,6 @@ function App() {
       console.log(error);
     }
   }
-
-
   useEffect(() => {
     getUser()
     const items = JSON.parse(localStorage.getItem('items'));
@@ -41,42 +38,37 @@ function App() {
     if (items) {
       setData(items);
     }
-
   }, [])
+  console.log(userInfo)
 
+  const handleClick = (e) => {
+    setDesc(e.target.id)
+    setValue(e.target.alt)
+  }
   const handleNew = () => {
     getUser()
     setDesc("name")
     setValue(`${userInfo?.name?.title} ${userInfo?.name?.first} ${userInfo?.name?.last}`)
   }
-  const handleClick = (e) => {
-    e.stopPropagation()
-    setDesc(e.target.id)
-    setValue(e.target.value)
-  }
   const handleAdd = () => {
-    user = {
+    const user = {
       name: `${userInfo?.name?.first}`,
       email: `${userInfo?.email}`,
       phone: `${userInfo?.cell}`,
       age: `${userInfo?.dob?.age}`,
       id: `${userInfo?.id.value}`
     }
-
     if ((data?.filter((item) => item.id === user.id)).length) {
       alert("Same User Clicked! ")
     } else {
       setData([...data, user])
+      localStorage.setItem('items', JSON.stringify([...data, user]));
     }
 
   }
   const handleClear = () => {
     setData([])
   }
-
-  useEffect(() => {
-    localStorage.setItem('items', JSON.stringify(data));
-  }, [data])
 
 
 
@@ -89,26 +81,26 @@ function App() {
       <div className="block">
         <div className="container">
           <img src={userInfo?.picture?.large} alt="random user" className="user-img" />
-          <p className="user-title">My {desc} is {value}</p>
-          <p className="user-value"></p>
+          <p className="user-title">My {desc} is </p>
+          <p className="user-value">{value}</p>
           <div className="values-list">
-            <button className="icon" id="name" onClick={handleClick} value={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last} >
-              <img src={userInfo?.gender === "female" ? womanSvg : manSvg} alt="user" className="iconImg" />
+            <button className="icon" id="name" >
+              <img src={userInfo?.gender === "female" ? womanSvg : manSvg} alt={userInfo?.name?.title + userInfo?.name?.first + userInfo?.name?.last} className="iconImg" onMouseOver={handleClick} id="name" />
             </button>
-            <button className="icon" id="email" onClick={handleClick} value={userInfo?.email}>
-              <img src={mailSvg} alt="mail" className="iconImg" />
+            <button className="icon" id="email"  >
+              <img src={mailSvg} alt={userInfo?.email} className="iconImg" onMouseOver={handleClick} id="email" />
             </button>
-            <button className="icon" id="age" onClick={handleClick} value={userInfo?.dob?.age}>
-              <img src={userInfo?.gender === "female" ? womanAgeSvg : manAgeSvg} alt="age" className="iconImg" />
+            <button className="icon"  >
+              <img src={userInfo?.gender === "female" ? womanAgeSvg : manAgeSvg} alt={userInfo?.dob?.age} className="iconImg" onMouseOver={handleClick} id="age" />
             </button>
-            <button className="icon" id="street" onClick={handleClick} value={userInfo?.location?.state}>
-              <img src={mapSvg} alt="map" className="iconImg" />
+            <button className="icon"  >
+              <img src={mapSvg} alt={userInfo?.location?.state} className="iconImg" id="street" onMouseOver={handleClick} />
             </button>
-            <button className="icon" id="phone" onClick={handleClick} value={userInfo?.cell} >
-              <img src={phoneSvg} alt="phone" className="iconImg" />
+            <button className="icon" >
+              <img src={phoneSvg} alt={userInfo?.cell} className="iconImg" id="phone" onMouseOver={handleClick} />
             </button>
-            <button className="icon" id="password" onClick={handleClick} value={userInfo?.login?.username} >
-              <img src={padlockSvg} alt="lock" className="iconImg" />
+            <button className="icon"  >
+              <img src={padlockSvg} alt={userInfo?.login?.username} className="iconImg" id="password" onMouseOver={handleClick} />
             </button>
           </div>
           <div className="btn-group">
@@ -118,7 +110,7 @@ function App() {
             <button className="btn" type="button" onClick={handleAdd}>
               add user
             </button>
-            <button className="btn" type="button" onClick={handleClear}>
+            <button className="btn" type="button" onClick={handleClear} >
               Clear All
             </button>
           </div>
@@ -133,7 +125,6 @@ function App() {
               </tr>
             </thead>
             <tbody>
-
               {data.length
 
                 ? data.map((item, index) => {
