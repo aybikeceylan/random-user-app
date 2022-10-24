@@ -62,13 +62,18 @@ function App() {
       alert("Same User Clicked! ")
     } else {
       setData([...data, user])
-      localStorage.setItem('items', JSON.stringify([...data, user]));
+
     }
 
   }
   const handleClear = () => {
     setData([])
+
   }
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(data));
+  }, [data])
+
 
 
 
@@ -129,7 +134,7 @@ function App() {
 
                 ? data.map((item, index) => {
                   // console.log(item, index);
-                  const { name, email, phone, age, id } = item
+                  const { name, email, phone, age } = item
 
                   return (<tr className="body-tr" key={index}>
                     <td className="th">{name}</td>
